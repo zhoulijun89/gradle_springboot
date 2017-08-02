@@ -1,0 +1,47 @@
+group 'com.pijun'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.7
+
+
+repositories {
+    mavenCentral()
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    mavenLocal()
+}
+
+
+dependencies {
+     testCompile group: 'junit', name: 'junit', version: '4.12'
+     testCompile group: 'org.springframework.boot', name: 'spring-boot-test', version: '1.4.2.RELEASE'
+     compile  group: 'org.springframework.boot', name :'spring-boot-starter-web', version:'1.5.1.RELEASE'
+}
+
+jar {
+    doFirst{
+        String someString = ''
+        configurations.runtime.each {someString = someString + " lib\\"+it.name}
+        manifest {
+            attributes 'Main-Class': 'com.pijun.web.Application'
+            attributes 'Class-Path': someString
+        }
+    }
+
+}
+
+//清除上次的编译过的文件
+task clearPj(type:Delete){
+    delete 'build','target','out'
+}
+
+task copyJars(type: Copy) {
+    from configurations.runtime
+    into 'build/libs/lib'
+}
+
+//把JAR复制到目标目录
+task release(type: Copy,dependsOn: [build,copyJars]) {
+
+}
