@@ -1,6 +1,7 @@
 package com.pijun.web.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -15,4 +16,13 @@ public class HelloController {
     public String HelloWorld(){
         return "World!";
     }
+
+
+    @RequestMapping("/hello")
+    public String Hello(Model model){
+        model.addAttribute("msg","这是一个ftl模板!");
+        return "hello";
+    }
+
+
 }
